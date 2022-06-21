@@ -71,16 +71,30 @@ export const fetchDayForecastData = async () => {
 };
 
 export const fetchCurrData = async () => {
-  const url =
-    "http://dataservice.accuweather.com/currentconditions/v1/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&&metric=true&details=true";
+  try {
+    const url =
+      "http://dataservice.accuweather.com/currentconditions/v1/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&details=true";
 
-  const res = await fetch(url, { method: "GET" });
+    const res = await fetch(url, { method: "GET", mode: "no-cors" });
 
-  const [data] = await res.json();
+    const [data] = await res.json();
 
-  const temp = Math.ceil(data.Temperature.Metric.Value);
+    const temp = Math.ceil(data.Temperature.Metric.Value);
 
-  const time = new Date(data.EpochTime * 1000).toTimeString().slice(0, 5);
+    let time = Number(
+      new Date(data.EpochTime * 1000)
+        .toTimeString()
+        .slice(0, 4)
+        .replace(":", ".")
+    );
 
-  return { time, temp };
+    if (time > 12) {
+      time = time - 12;
+      time = Number(time.toFixed(1));
+    }
+
+    return { time, temp };
+  } catch (e) {
+    console.log(e);
+  }
 };
