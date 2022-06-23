@@ -6,13 +6,15 @@ export const fecth24HForecast = async () => {
 
   const data = await response.json();
 
-  const hourlyForecast = data.days[0].hours;
+  const [forecast] = data.days;
 
-  const description = data.days[0].description;
+  const hourlyForecast = forecast.hours;
 
-  const sunrise = data.days[0].sunriseEpoch;
+  const description = forecast.description;
 
-  const sunset = data.days[0].sunsetEpoch;
+  const sunrise = forecast.sunriseEpoch;
+
+  const sunset = forecast.sunsetEpoch;
 
   const currWeather = data.currentConditions;
 
