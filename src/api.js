@@ -1,100 +1,20 @@
-export const fetch12HForecastData = async () => {
-  try {
-    const res = await fetch(
-      "http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&details=true&metric=true",
-      {
-        method: "GET",
-      }
-    );
+export const fecth24HForecast = async () => {
+  const query =
+    "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/manchester/today?unitGroup=metric&include=hours%2Ccurrent&key=EST45QEHPPZ7PDCXEKLA642C4&contentType=json";
 
-    const data = await res.json();
-    const filtered = data.map((d) => {
-      let time = Number(d.DateTime.slice(11, 13));
-      const temp = Math.ceil(d.Temperature.Value);
-      const phrase = d.IconPhrase;
+  const response = await fetch(query);
 
-      if (time === 0) {
-        time = 12;
-        return { time, temp, phrase };
-      } else if (time > 12) {
-        time = time - 12;
-        return { time, temp, phrase };
-      } else {
-        return { time, temp, phrase };
-      }
-    });
-    return filtered;
-  } catch (err) {
-    return console.log(err);
-  }
-};
+  const data = await response.json();
 
-export const fetchLocData = async () => {
-  try {
-    const url =
-      "http://dataservice.accuweather.com/locations/v1/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&details=true";
+  const hourlyForecast = data.days[0].hours;
 
-    const response = await fetch(url, { method: "GET" });
+  const description = data.days[0].description;
 
-    return response.json();
-  } catch (e) {
-    return console.log(e);
-  }
-};
+  const sunrise = data.days[0].sunriseEpoch;
 
-export const fetchDayForecastData = async () => {
-  try {
-    const res = await fetch(
-      "http://dataservice.accuweather.com/forecasts/v1/daily/1day/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&&metric=true&details=true",
-      {
-        method: "GET",
-      }
-    );
-    const data = await res.json();
+  const sunset = data.days[0].sunsetEpoch;
 
-    const forecast = data.DailyForecasts[0];
+  const currWeather = data.currentConditions;
 
-    const airqual = forecast.AirAndPollen[0].Value;
-
-    const sun = forecast.Sun;
-
-    const uv = forecast.AirAndPollen[5].Value;
-
-    const pollen = forecast.AirAndPollen.reduce((prev, curr) => {
-      return prev + curr.Value;
-    }, 0);
-
-    return { airqual, pollen, sun, uv };
-  } catch (err) {
-    return console.log(err);
-  }
-};
-
-export const fetchCurrData = async () => {
-  try {
-    const url =
-      "http://dataservice.accuweather.com/currentconditions/v1/329260?apikey=U3HWtAc8UPNC8DWENtKhAvbRReaKV1Uc&details=true";
-
-    const res = await fetch(url, { method: "GET", mode: "no-cors" });
-
-    const [data] = await res.json();
-
-    const temp = Math.ceil(data.Temperature.Metric.Value);
-
-    let time = Number(
-      new Date(data.EpochTime * 1000)
-        .toTimeString()
-        .slice(0, 4)
-        .replace(":", ".")
-    );
-
-    if (time > 12) {
-      time = time - 12;
-      time = Number(time.toFixed(1));
-    }
-
-    return { time, temp };
-  } catch (e) {
-    console.log(e);
-  }
+  return { hourlyForecast, description, sunrise, sunset, currWeather };
 };
