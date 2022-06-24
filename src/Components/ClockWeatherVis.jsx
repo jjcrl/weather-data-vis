@@ -7,6 +7,7 @@ import {
   VictoryPolarAxis,
   VictoryLine,
   VictoryLabel,
+  VictoryContainer,
 } from "victory";
 
 import { fecth24HForecast } from "../api";
@@ -78,27 +79,13 @@ const ClockWeatherVis = () => {
   if (loading) return <p>loader</p>;
 
   return (
-    <div className="App">
-      <svg style={{ height: 0 }}>
+    <>
+      <svg style={{ height: 0, width: 0 }}>
         <defs>
           <linearGradient id="myGradient">
-            <stop offset="0%" stopColor="red" />
-            <stop offset="50%" stopColor="orange" />
-            <stop offset="100%" stopColor="gold" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <svg style={{ height: 0 }}>
-        <defs>
-          <linearGradient id="myGradient2">
-            <stop offset="0%" stop-color="#3182ce" />
-            <stop offset="14.29%" stop-color="#348fc5" />
-            <stop offset="28.57%" stop-color="#389ac2" />
-            <stop offset="42.86%" stop-color="#3ca5c1" />
-            <stop offset="57.14%" stop-color="#41b0c2" />
-            <stop offset="71.43%" stop-color="#45bbc3" />
-            <stop offset="100%" stop-color="#4fd1c5" />
+            <stop offset="0%" stopColor="#f8bb60" />
+            <stop offset="50%" stopColor="#e95b37" />
+            <stop offset="100%" stopColor="#c67477" />
           </linearGradient>
         </defs>
       </svg>
@@ -108,14 +95,15 @@ const ClockWeatherVis = () => {
         scale={{ x: "time" }}
         startAngle={450}
         endAngle={90}
-        domainPadding={{ y: 5 }}
-        height={500}
-        width={500}
+        domainPadding={{ y: 0 }}
+        height={740}
+        width={800}
+        containerComponent={<VictoryContainer responsive={false} />}
       >
         <VictoryPolarAxis
           style={{
             axis: { stroke: "none" },
-            tickLabels: { fontSize: 15, opacity: "10%", padding: 25 },
+            tickLabels: { fontSize: 25, opacity: "10%", padding: -10 },
           }}
           labelPlacement="perpendicular"
           tickValues={hourly.map((h) => h.datetimeEpoch)}
@@ -144,44 +132,6 @@ const ClockWeatherVis = () => {
           }}
         />
 
-        <VictoryPolarAxis
-          dependentAxis
-          axisValue={time}
-          style={{
-            labels: { fontSize: 12 },
-            axis: {
-              stroke: "black",
-              strokeWidth: "0.1ç",
-            },
-            tickLabels: { display: "none" },
-          }}
-          label={Math.ceil(curr.temp) + "°"}
-          labelPlacement="vertical"
-        />
-
-        <circle
-          cx="255"
-          cy="250"
-          r="70"
-          fill="white"
-          stroke="black"
-          strokeWidth={0.1}
-        />
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={255}
-          y={250}
-          style={{ fontSize: 15, color: "white" }}
-          text={[
-            [
-              `${new Date(time * 1000).toDateString().slice(4, 10)} : `,
-              `${new Date(time * 1000).toTimeString().slice(0, 8)} `,
-            ],
-            `${curr.conditions}`,
-          ]}
-        />
-
         <VictoryArea
           domain={{
             y: [minMax.min, minMax.max],
@@ -203,8 +153,46 @@ const ClockWeatherVis = () => {
             },
           }}
         />
+        <VictoryPolarAxis
+          dependentAxis
+          axisValue={time}
+          style={{
+            axisLabel: { fontSize: 35, padding: 33, opacity: "75%" },
+            axis: {
+              stroke: "black",
+              strokeWidth: "0.1",
+              strokeDasharray: 285,
+            },
+            tickLabels: { display: "none" },
+          }}
+          label={`${Math.ceil(curr.temp).toString()}°`}
+          labelPlacement="horizontal"
+        />
+
+        <circle
+          cx="400"
+          cy="370"
+          r="100"
+          fill="white"
+          stroke="black"
+          strokeWidth={0.1}
+        />
+        <VictoryLabel
+          textAnchor="middle"
+          verticalAnchor="middle"
+          x={400}
+          y={370}
+          style={{ fontSize: 20, color: "white" }}
+          text={[
+            [
+              `${new Date(time * 1000).toDateString().slice(4, 10)} : `,
+              `${new Date(time * 1000).toTimeString().slice(0, 8)} `,
+            ],
+            `${curr.conditions}`,
+          ]}
+        />
       </VictoryChart>
-    </div>
+    </>
   );
 };
 
