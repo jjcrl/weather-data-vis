@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 
 import {
@@ -18,7 +18,7 @@ const ClockWeatherVis = () => {
 
   const [sunData, setSunData] = useState();
 
-  const [description, setDescrption] = useState();
+  // const [description, setDescrption] = useState();
 
   const [minMax, setMinMax] = useState();
 
@@ -30,7 +30,7 @@ const ClockWeatherVis = () => {
     fecth24HForecast().then((data) => {
       setHourly(data.hourlyForecast);
       setMinMax(findMinMaxTemp(data.hourlyForecast));
-      setDescrption(data.description);
+      // setDescrption(data.description);
       setCurr(data.currWeather);
       setSunData(findSunPhases(data.sunrise, data.sunset));
       setLoading(false);
@@ -136,11 +136,10 @@ const ClockWeatherVis = () => {
           style={{
             data: {
               stroke: "none",
-              fill: "grey",
-              opacity: "15%",
+              fill: "peachpuff",
+              opacity: "20%",
             },
           }}
-          animate={{ duration: 3000, easing: "cubic" }}
         />
 
         <VictoryPolarAxis
@@ -154,6 +153,7 @@ const ClockWeatherVis = () => {
             tickLabels: { display: "none" },
           }}
           label={Math.ceil(curr.temp) + "°"}
+          labelPlacement="vertical"
         />
 
         <circle
@@ -204,7 +204,6 @@ const ClockWeatherVis = () => {
               opacity: "50%",
             },
           }}
-          animate={{ duration: 3000, easing: "cubic" }}
         />
       </VictoryChart>
     </div>
