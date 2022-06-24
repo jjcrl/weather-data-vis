@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import ClockWeatherVis from "./Components/ClockWeatherVis";
-import PollenGauge from "./Components/PollenGauge";
+// import PollenGauge from "./Components/PollenGauge";
 
 function App() {
   return (
