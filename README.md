@@ -4,4 +4,5 @@
 
  I wanted to take on this project to get a better udersating of how DOM and Node elements are rendered and and created with React. As somwhat of a stepping stone to D3.js. 
 
-# Hosted Link Coming Soon ! 
+## Live ! 
+# https://forecast-face.netlify.app/
