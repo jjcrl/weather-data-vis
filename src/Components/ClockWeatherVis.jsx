@@ -109,11 +109,13 @@ const ClockWeatherVis = () => {
         startAngle={450}
         endAngle={90}
         domainPadding={{ y: 5 }}
+        height={500}
+        width={500}
       >
         <VictoryPolarAxis
           style={{
             axis: { stroke: "none" },
-            tickLabels: { fontSize: 7, padding: 5 },
+            tickLabels: { fontSize: 15, opacity: "10%", padding: 25 },
           }}
           labelPlacement="perpendicular"
           tickValues={hourly.map((h) => h.datetimeEpoch)}
@@ -146,9 +148,10 @@ const ClockWeatherVis = () => {
           dependentAxis
           axisValue={time}
           style={{
+            labels: { fontSize: 12 },
             axis: {
               stroke: "black",
-              strokeWidth: "1.5",
+              strokeWidth: "0.1ç",
             },
             tickLabels: { display: "none" },
           }}
@@ -157,19 +160,19 @@ const ClockWeatherVis = () => {
         />
 
         <circle
-          cx="225"
-          cy="150"
-          r="30"
+          cx="255"
+          cy="250"
+          r="70"
           fill="white"
           stroke="black"
-          strokeWidth={0.5}
+          strokeWidth={0.1}
         />
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
-          x={226}
-          y={151}
-          style={{ fontSize: 7, color: "white" }}
+          x={255}
+          y={250}
+          style={{ fontSize: 15, color: "white" }}
           text={[
             [
               `${new Date(time * 1000).toDateString().slice(4, 10)} : `,
@@ -196,12 +199,7 @@ const ClockWeatherVis = () => {
             data: {
               fill: "none",
               stroke: "url(#myGradient)",
-              strokeWidth: "0.3",
-            },
-            labels: {
-              fontSize: 5,
-              padding: -13,
-              opacity: "50%",
+              strokeWidth: "2",
             },
           }}
         />
