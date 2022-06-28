@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { VictoryChart, VictoryPie } from "victory";
+import { VictoryChart, VictoryBar } from "victory";
 import { fecth24HForecast, fetchAirData, test } from "../api";
 
 const PollenGauge = () => {
@@ -8,6 +8,7 @@ const PollenGauge = () => {
 
   useEffect(() => {
     fetchAirData().then((data) => {
+      console.log(data);
       const pollen = data.map((d) => {
         return { x: d.Name, y: d.Value + 1 };
       });
@@ -18,7 +19,6 @@ const PollenGauge = () => {
 
       setAirData(pollen);
 
-      pollen.push({ x: "void", y: 6 });
       setLoading(false);
     });
   }, []);
@@ -26,16 +26,9 @@ const PollenGauge = () => {
   if (loading) return <p>loading</p>;
 
   return (
-    <>
-      <VictoryPie
-        data={airData}
-        innerRadius={100}
-        startAngle={90}
-        endAngle={-90}
-        radius={70}
-        cornerRadius={20}
-      />
-    </>
+    <VictoryChart domain={{ xy: [0] }}>
+      <VictoryBar data={airData} horizontal />
+    </VictoryChart>
   );
 };
 

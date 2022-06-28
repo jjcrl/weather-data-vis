@@ -36,19 +36,22 @@ export const fetchAirData = async () => {
   return AirAndPollen;
 };
 
-// export const test = async () => {
-//   const url =
-//     "https://api-metoffice.apiconnect.ibmcloud.com/v0/forecasts/point/daily?latitude=4.79625196&longitude=18.5002329";
+export const test = async () => {
+  try {
+    const res = await fetch(
+      "https://api.ambeedata.com/latest/pollen/by-lat-lng?lat=12.9889055&lng=77.574044",
+      {
+        method: "GET",
+        headers: {
+          "x-api-key":
+            "493a41a001f30a8c09fe6c499bc250c8fc782e0257908245172de3fe84e93d7f",
+          "Content-type": "application/json",
+        },
+      }
+    );
 
-//   const data = await fetch(url, {
-//     headers: {
-//       "X-IBM-Client-Id": "376b6467b2d0de2332137cbb351f6f0b",
-//       "X-IBM-Client-Secret": "e4482f6f6fcea3d7dedaa4c679ccf49a",
-//       accept: "application/json",
-//     },
-//   });
-
-//   const hello = await data.json();
-
-//   console.log(hello);
-// };
+    return res;
+  } catch (e) {
+    console.log(e);
+  }
+};

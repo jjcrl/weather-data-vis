@@ -95,24 +95,28 @@ const ClockWeatherVis = () => {
         scale={{ x: "time" }}
         startAngle={450}
         endAngle={90}
-        domainPadding={{ y: 0 }}
         height={740}
         width={800}
         containerComponent={<VictoryContainer responsive={false} />}
       >
         <VictoryPolarAxis
           style={{
-            axis: { stroke: "none" },
-            tickLabels: { fontSize: 25, opacity: "10%", padding: -10 },
+            axis: { stroke: "none", strokeWidth: 0.1 },
+            tickLabels: {
+              fontSize: 25,
+              opacity: "50%",
+              padding: -10,
+              fill: "#5e4d5d",
+            },
           }}
           labelPlacement="perpendicular"
           tickValues={hourly.map((h) => h.datetimeEpoch)}
           tickFormat={(t) => {
-            let test = new Date(t * 1000).toLocaleTimeString().slice(0, 2);
-            if (test === "00") {
-              test = "24";
+            let time = new Date(t * 1000).toLocaleTimeString().slice(0, 2);
+            if (time === "00") {
+              time = "24";
             }
-            return test[0] === "0" ? test.slice(-1) : test;
+            return time[0] === "0" ? time.slice(-1) : time;
           }}
         />
 
@@ -127,9 +131,31 @@ const ClockWeatherVis = () => {
             data: {
               stroke: "none",
               fill: "peachpuff",
-              opacity: "20%",
+              opacity: "10%",
             },
           }}
+        />
+
+        <VictoryPolarAxis
+          dependentAxis
+          axisValue={time}
+          style={{
+            axisLabel: {
+              fontSize: 40,
+              padding: 45,
+              opacity: "75%",
+              fill: "#cfcbd9",
+              fontWeight: 600,
+            },
+            axis: {
+              fill: "#5e4d5d",
+              strokeWidth: "0.6",
+              strokeDasharray: 285,
+            },
+            tickLabels: { display: "none" },
+          }}
+          label={`${Math.ceil(curr.temp).toString()}°`}
+          labelPlacement="horizontal"
         />
 
         <VictoryArea
@@ -153,43 +179,45 @@ const ClockWeatherVis = () => {
             },
           }}
         />
-        <VictoryPolarAxis
-          dependentAxis
-          axisValue={time}
-          style={{
-            axisLabel: { fontSize: 35, padding: 33, opacity: "75%" },
-            axis: {
-              stroke: "black",
-              strokeWidth: "0.1",
-              strokeDasharray: 285,
-            },
-            tickLabels: { display: "none" },
-          }}
-          label={`${Math.ceil(curr.temp).toString()}°`}
-          labelPlacement="horizontal"
-        />
 
         <circle
           cx="400"
           cy="370"
           r="100"
-          fill="white"
+          fill="#090909"
           stroke="black"
-          strokeWidth={0.1}
+          strokeWidth={1}
         />
+
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
           x={400}
-          y={370}
-          style={{ fontSize: 20, color: "white" }}
+          y={353}
+          style={{ fontSize: 27, fill: "#cfcbd9" }}
+          lineHeight={1.2}
           text={[
-            [
-              `${new Date(time * 1000).toDateString().slice(4, 10)} : `,
-              `${new Date(time * 1000).toTimeString().slice(0, 8)} `,
-            ],
-            `${curr.conditions}`,
+            `${new Date(time * 1000).toLocaleTimeString(undefined, {
+              hour12: true,
+              hour: "numeric",
+              minute: "numeric",
+            })} `,
+            `${new Date(time * 1000).toLocaleDateString(undefined, {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })} `,
           ]}
+        />
+
+        <VictoryLabel
+          textAnchor="middle"
+          verticalAnchor="middle"
+          x={473}
+          y={401}
+          style={{ fontSize: 18, fill: "#cfcbd9", opacity: "85%" }}
+          text={curr.conditions}
+          transform="skewX(-10)"
         />
       </VictoryChart>
     </>
