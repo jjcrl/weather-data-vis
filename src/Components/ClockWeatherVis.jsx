@@ -14,17 +14,12 @@ import { fecth24HForecast } from "../api";
 
 const ClockWeatherVis = () => {
   const [hourly, setHourly] = useState();
-
   const [curr, setCurr] = useState();
-
   const [sunData, setSunData] = useState();
-
   // const [description, setDescrption] = useState();
-
+  // const [light, setlight] = useState(["#5e4d5d", "#cfcbd9"]);
   const [minMax, setMinMax] = useState();
-
   const [loading, setLoading] = useState(true);
-
   const [time, setTime] = useState(new Date().getTime() / 1000);
 
   useEffect(() => {
@@ -39,7 +34,7 @@ const ClockWeatherVis = () => {
   }, []);
 
   useEffect(() => {
-    var timerID = setInterval(() => tick(), 1000);
+    let timerID = setInterval(() => tick(), 1000);
 
     return function cleanup() {
       clearInterval(timerID);
@@ -97,15 +92,15 @@ const ClockWeatherVis = () => {
         endAngle={90}
         height={740}
         width={800}
-        containerComponent={<VictoryContainer responsive={true} />}
+        containerComponent={<VictoryContainer responsive={false} />}
       >
         <VictoryPolarAxis
           style={{
-            axis: { stroke: "none", strokeWidth: 0.1 },
+            axis: { stroke: "whitesmoke", strokeWidth: 0, opacity: "20%" },
             tickLabels: {
               fontSize: 25,
               opacity: "50%",
-              padding: -10,
+              padding: -20,
               fill: "#5e4d5d",
             },
           }}
@@ -142,20 +137,19 @@ const ClockWeatherVis = () => {
           style={{
             axisLabel: {
               fontSize: 40,
-              padding: 45,
-              opacity: "75%",
+              padding: 15,
+              opacity: "85%",
               fill: "#cfcbd9",
-              fontWeight: 600,
             },
             axis: {
               fill: "#5e4d5d",
-              strokeWidth: "0.6",
-              strokeDasharray: 285,
+              strokeWidth: 1,
+              strokeDasharray: 280,
             },
             tickLabels: { display: "none" },
           }}
           label={`${Math.ceil(curr.temp).toString()}°`}
-          labelPlacement="horizontal"
+          labelPlacement="vertical"
         />
 
         <VictoryArea
@@ -169,13 +163,13 @@ const ClockWeatherVis = () => {
           data={hourly}
           x={"datetimeEpoch"}
           y={"temp"}
-          interpolation={"basis"}
+          interpolation="basis"
           labelPlacement="horizontal"
           style={{
             data: {
               fill: "none",
               stroke: "url(#myGradient)",
-              strokeWidth: "2",
+              strokeWidth: "3",
             },
           }}
         />
@@ -183,10 +177,10 @@ const ClockWeatherVis = () => {
         <circle
           cx="400"
           cy="370"
-          r="100"
+          r="105"
           fill="#090909"
-          stroke="black"
-          strokeWidth={1}
+          stroke="#c67477"
+          strokeWidth={0.1}
         />
 
         <VictoryLabel
@@ -206,7 +200,7 @@ const ClockWeatherVis = () => {
               weekday: "long",
               month: "long",
               day: "numeric",
-            })} `,
+            })}`,
           ]}
         />
 
@@ -215,7 +209,7 @@ const ClockWeatherVis = () => {
           verticalAnchor="middle"
           x={473}
           y={401}
-          style={{ fontSize: 18, fill: "#cfcbd9", opacity: "85%" }}
+          style={{ fontSize: 18, fill: "#cfcbd9", opacity: "70%" }}
           text={curr.conditions}
           transform="skewX(-10)"
         />
