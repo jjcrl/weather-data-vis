@@ -97,7 +97,7 @@ const ClockWeatherVis = () => {
         endAngle={90}
         height={740}
         width={800}
-        containerComponent={<VictoryContainer responsive={false} />}
+        containerComponent={<VictoryContainer responsive={true} />}
       >
         <VictoryPolarAxis
           style={{
