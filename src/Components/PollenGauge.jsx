@@ -1,6 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { VictoryChart, VictoryBar } from "victory";
-import { fecth24HForecast, fetchAirData, test } from "../api";
+import { fetchAirData } from "../api";
 
 const PollenGauge = () => {
   const [airData, setAirData] = useState();
