@@ -85,6 +85,18 @@ const ClockWeatherVis = () => {
         </defs>
       </svg>
 
+      <svg style={{ height: 0, width: 0 }}>
+        <defs>
+          <linearGradient id="myGradient2">
+            <stop offset="0%" stopColor="#050505" />
+            <stop offset="25%" stopColor="#343336" />
+            <stop offset="50%" stopColor="#646268" />
+            <stop offset="75%" stopColor="#98959f" />
+            <stop offset="100%" stopColor="#cfcbd9" />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <VictoryChart
         polar
         scale={{ x: "time" }}
@@ -142,9 +154,10 @@ const ClockWeatherVis = () => {
               fill: "#cfcbd9",
             },
             axis: {
-              fill: "#5e4d5d",
-              strokeWidth: 1,
-              strokeDasharray: 280,
+              stroke: "url(#myGradient2)",
+              strokeWidth: 1.5,
+              strokeDasharray: 270,
+              opacity: "30%",
             },
             tickLabels: { display: "none" },
           }}
@@ -169,7 +182,7 @@ const ClockWeatherVis = () => {
             data: {
               fill: "none",
               stroke: "url(#myGradient)",
-              strokeWidth: "3",
+              strokeWidth: "12",
             },
           }}
         />
@@ -180,16 +193,16 @@ const ClockWeatherVis = () => {
           r="105"
           fill="#090909"
           stroke="#c67477"
-          strokeWidth={0.1}
+          strokeWidth={0.3}
         />
 
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
-          x={400}
+          x={401}
           y={353}
-          style={{ fontSize: 25, fill: "#cfcbd9" }}
-          lineHeight={1.2}
+          style={{ fontSize: 24, fill: "#cfcbd9" }}
+          lineHeight={1.3}
           text={[
             `${new Date(time * 1000).toLocaleTimeString(undefined, {
               hour12: true,
