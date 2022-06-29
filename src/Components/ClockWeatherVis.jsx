@@ -188,7 +188,7 @@ const ClockWeatherVis = () => {
           verticalAnchor="middle"
           x={400}
           y={353}
-          style={{ fontSize: 27, fill: "#cfcbd9" }}
+          style={{ fontSize: 25, fill: "#cfcbd9" }}
           lineHeight={1.2}
           text={[
             `${new Date(time * 1000).toLocaleTimeString(undefined, {
