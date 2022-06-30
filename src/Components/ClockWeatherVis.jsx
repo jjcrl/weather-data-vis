@@ -149,15 +149,15 @@ const ClockWeatherVis = () => {
           style={{
             axisLabel: {
               fontSize: 40,
-              padding: 15,
+              padding: 30,
               opacity: "85%",
               fill: "#cfcbd9",
             },
             axis: {
-              stroke: "url(#myGradient2)",
+              stroke: "peachpuff",
               strokeWidth: 1.5,
               strokeDasharray: 270,
-              opacity: "30%",
+              opacity: "20%",
             },
             tickLabels: { display: "none" },
           }}
@@ -193,7 +193,7 @@ const ClockWeatherVis = () => {
           r="105"
           fill="#090909"
           stroke="#c67477"
-          strokeWidth={0.3}
+          strokeWidth={0.1}
         />
 
         <VictoryLabel
