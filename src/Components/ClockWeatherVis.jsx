@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import Loader from "./Loader.jsx";
 
 import {
   VictoryArea,
@@ -29,7 +30,7 @@ const ClockWeatherVis = () => {
       // setDescrption(data.description);
       setCurr(data.currWeather);
       setSunData(findSunPhases(data.sunrise, data.sunset));
-      setLoading(false);
+      setInterval(() => setLoading(false), 2000);
     });
   }, []);
 
@@ -71,28 +72,18 @@ const ClockWeatherVis = () => {
     return data;
   };
 
-  if (loading) return <p>loader</p>;
+  if (loading) return <Loader />;
 
   return (
     <>
       <svg style={{ height: 0, width: 0 }}>
         <defs>
           <linearGradient id="myGradient">
-            <stop offset="0%" stopColor="#f8bb60" />
+            <stop offset="0%" stopColor="#fcbf56" />
+            <stop offset="5%" stopColor="#fcbf56" />
             <stop offset="50%" stopColor="#e95b37" />
-            <stop offset="100%" stopColor="#c67477" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <svg style={{ height: 0, width: 0 }}>
-        <defs>
-          <linearGradient id="myGradient2">
-            <stop offset="0%" stopColor="#050505" />
-            <stop offset="25%" stopColor="#343336" />
-            <stop offset="50%" stopColor="#646268" />
-            <stop offset="75%" stopColor="#98959f" />
-            <stop offset="100%" stopColor="#cfcbd9" />
+            <stop offset="90%" stopColor="#ab4358" />
+            <stop offset="100%" stopColor="#91345b" />
           </linearGradient>
         </defs>
       </svg>
@@ -114,6 +105,7 @@ const ClockWeatherVis = () => {
               opacity: "50%",
               padding: -20,
               fill: "#5e4d5d",
+              fontFamily: "GT Maru Trial",
             },
           }}
           labelPlacement="perpendicular"
@@ -148,16 +140,16 @@ const ClockWeatherVis = () => {
           axisValue={time}
           style={{
             axisLabel: {
-              fontSize: 40,
-              padding: 30,
-              opacity: "85%",
+              fontSize: 45,
+              padding: 45,
               fill: "#cfcbd9",
+              fontFamily: "GT Maru Trial",
             },
             axis: {
-              stroke: "peachpuff",
-              strokeWidth: 1.5,
+              stroke: "whitesmoke",
+              strokeWidth: 2.5,
               strokeDasharray: 270,
-              opacity: "20%",
+              opacity: "30%",
             },
             tickLabels: { display: "none" },
           }}
@@ -166,6 +158,16 @@ const ClockWeatherVis = () => {
         />
 
         <VictoryArea
+          animate={{
+            animationWhitelist: ["data"],
+            onLoad: {
+              duration: 30000,
+              before: (datum) => ({ _y: datum._y }),
+              after: (datum) => ({
+                _y: datum._y + 0.1,
+              }),
+            },
+          }}
           domain={{
             y: [minMax.min, minMax.max],
             x: [
@@ -193,26 +195,60 @@ const ClockWeatherVis = () => {
           r="105"
           fill="#090909"
           stroke="#c67477"
-          strokeWidth={0.1}
+          strokeWidth={0.2}
         />
 
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
-          x={401}
-          y={353}
-          style={{ fontSize: 24, fill: "#cfcbd9" }}
-          lineHeight={1.3}
+          x={403}
+          y={371}
+          style={{
+            fontSize: 36,
+            fill: "whitesmoke",
+            fontFamily: "GT Maru Trial",
+          }}
           text={[
             `${new Date(time * 1000).toLocaleTimeString(undefined, {
               hour12: true,
               hour: "numeric",
               minute: "numeric",
             })} `,
+          ]}
+        />
+
+        <VictoryLabel
+          textAnchor="middle"
+          verticalAnchor="middle"
+          x={401}
+          y={405}
+          style={{
+            opacity: "70%",
+            fontSize: 15,
+            fill: "#cfcbd9",
+            fontFamily: "GT Maru Trial",
+          }}
+          text={[
             `${new Date(time * 1000).toLocaleDateString(undefined, {
               weekday: "long",
-              month: "long",
+            })}`,
+          ]}
+        />
+        <VictoryLabel
+          textAnchor="middle"
+          verticalAnchor="middle"
+          x={401}
+          y={430}
+          style={{
+            opacity: "50%",
+            fontSize: 17,
+            fill: "#cfcbd9",
+            fontFamily: "GT Maru Trial",
+          }}
+          text={[
+            `${new Date(time * 1000).toLocaleDateString(undefined, {
               day: "numeric",
+              month: "long",
             })}`,
           ]}
         />
@@ -220,11 +256,29 @@ const ClockWeatherVis = () => {
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
-          x={473}
-          y={401}
-          style={{ fontSize: 18, fill: "#cfcbd9", opacity: "70%" }}
+          x={460}
+          y={335}
+          style={{
+            fontSize: 15,
+            fill: "#cfcbd9",
+            opacity: "70%",
+            fontFamily: "GT Maru Trial",
+          }}
           text={curr.conditions}
           transform="skewX(-10)"
+        />
+        <VictoryLabel
+          textAnchor="middle"
+          verticalAnchor="middle"
+          x={401}
+          y={310}
+          style={{
+            fontSize: 17,
+            fill: "#cfcbd9",
+            opacity: "50%",
+            fontFamily: "GT Maru Trial",
+          }}
+          text={`H:${minMax.min}° L:${minMax.max}°`}
         />
       </VictoryChart>
     </>

@@ -9,4 +9,56 @@ body {
 
 .VictoryContainer {
   margin: 10px;
+  animation: fadein 2s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loader-container {
+  background-color: #050505;
+  width: 100vw;
+  height: 100vh;
+  margin: -1em;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 95%;
+  animation: fadeout 4s;
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.spinner {
+  width: 10rem;
+  height: 10rem;
+  border: 1em solid;
+  border-color: whitesmoke transparent whitesmoke transparent;
+  border-radius: 50%;
+  animation: spin-anim 1s linear infinite;
+}
+
+@keyframes spin-anim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
