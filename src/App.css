@@ -38,17 +38,17 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 95%;
-  animation: fadeout 4s;
+  /* animation: fadeout 4s; */
 }
 
-@keyframes fadeout {
+/* @keyframes fadeout {
   from {
     opacity: 1;
   }
   to {
     opacity: 0;
   }
-}
+} */
 
 .spinner {
   width: 10rem;

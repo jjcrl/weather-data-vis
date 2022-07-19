@@ -30,6 +30,7 @@ const ClockWeatherVis = () => {
       // setDescrption(data.description);
       setCurr(data.currWeather);
       setSunData(findSunPhases(data.sunrise, data.sunset));
+      setLoading(false);
     });
   }, []);
 
