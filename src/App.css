@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Gt-Maru Trial;
+  src: url(./fonts/GT-Maru-Regular-Trial.otf);
+}
+
 body {
   background-color: #050505;
 }

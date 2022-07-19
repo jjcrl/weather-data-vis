@@ -30,7 +30,6 @@ const ClockWeatherVis = () => {
       // setDescrption(data.description);
       setCurr(data.currWeather);
       setSunData(findSunPhases(data.sunrise, data.sunset));
-      setInterval(() => setLoading(false), 2000);
     });
   }, []);
 
@@ -169,7 +168,7 @@ const ClockWeatherVis = () => {
             },
           }}
           domain={{
-            y: [minMax.min, minMax.max],
+            y: [minMax.min, minMax.max + 10],
             x: [
               hourly[0].datetimeEpoch,
               hourly[hourly.length - 1].datetimeEpoch,
@@ -278,7 +277,7 @@ const ClockWeatherVis = () => {
             opacity: "50%",
             fontFamily: "GT Maru Trial",
           }}
-          text={`H:${minMax.min}° L:${minMax.max}°`}
+          text={`H:${minMax.max}° L:${minMax.min}°`}
         />
       </VictoryChart>
     </>
