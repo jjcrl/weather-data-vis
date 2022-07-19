@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import Loader from "./Loader.jsx";
-import "../";
+import "../../public/index.css";
 
 import {
   VictoryArea,
