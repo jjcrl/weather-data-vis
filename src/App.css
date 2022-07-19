@@ -1,6 +1,8 @@
 @font-face {
   font-family: Gt-Maru Trial;
-  src: url(./fonts/GT-Maru-Regular-Trial.otf);
+  src: local("Gt Maru Trial"),
+    url(./fonts/GtMaru/GT-Maru-Regular-Trial.otf) format("trutype");
+  font-weight: normal;
 }
 
 body {
