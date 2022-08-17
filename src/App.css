@@ -10,10 +10,11 @@ body {
 .App {
   display: flex;
   justify-content: center;
+  padding-top: 0.5em;
 }
 
 .VictoryContainer {
-  margin: 10px;
+  margin: 15px;
   animation: fadein 2s;
 }
 
