@@ -95,7 +95,7 @@ const ClockWeatherVis = () => {
             patternUnits="userSpaceOnUse"
           >
             <circle
-              r={0.3}
+              r={0.45}
               cx={0.5}
               cy={0.5}
               style={{ fill: "peachpuff", opacity: "100%" }}
@@ -113,7 +113,7 @@ const ClockWeatherVis = () => {
               r={0.3}
               cx={0.5}
               cy={0.5}
-              style={{ fill: "#5e4d5d", opacity: "30%" }}
+              style={{ fill: "#5e4d5d", opacity: "25%" }}
             />
           </pattern>
         </defs>
@@ -153,7 +153,7 @@ const ClockWeatherVis = () => {
         <VictoryLine
           interpolation="basis"
           domain={{
-            y: [-10, 30],
+            y: [-10, 0],
             x: [sunData[0].x, sunData[sunData.length - 1].x],
           }}
           data={sunData}
@@ -165,6 +165,23 @@ const ClockWeatherVis = () => {
             },
           }}
         />
+        <VictoryLine
+          origin={{ x: 10, y: 10 }}
+          interpolation="basis"
+          domain={{
+            x: [sunData[0].x, sunData[sunData.length - 1].x],
+          }}
+          data={sunData}
+          style={{
+            data: {
+              stroke: "peachpuff",
+              opacity: "30%",
+              strokeWidth: 1.3,
+              strokeDasharray: 90,
+              strokeLinecap: "round",
+            },
+          }}
+        />
 
         <VictoryPolarAxis
           dependentAxis
@@ -172,15 +189,16 @@ const ClockWeatherVis = () => {
           style={{
             axisLabel: {
               fontSize: 55,
-              padding: 50,
+              padding: 55,
               fill: "#cfcbd9",
               fontFamily: "GT Maru Trial",
+              fontWeight: 600,
             },
             axis: {
               stroke: "whitesmoke",
-              strokeWidth: 2.5,
+              strokeWidth: 6,
               strokeDasharray: 270,
-              opacity: "30%",
+              opacity: "25%",
             },
             tickLabels: { display: "none" },
           }}
@@ -189,16 +207,6 @@ const ClockWeatherVis = () => {
         />
 
         <VictoryArea
-          // animate={{
-          //   animationWhitelist: ["data"],
-          //   onLoad: {
-          //     duration: 30000,
-          //     before: (datum) => ({ _y: datum._y }),
-          //     after: (datum) => ({
-          //       _y: datum._y + 0.1,
-          //     }),
-          //   },
-          // }}
           domain={{
             y: [minMax.min, minMax.max + 10],
             x: [
@@ -234,7 +242,7 @@ const ClockWeatherVis = () => {
           r="105"
           fill="url(#pattern2)"
           stroke="#c67477"
-          strokeWidth={0.15}
+          strokeWidth={0.3}
         />
 
         <VictoryLabel
@@ -247,6 +255,7 @@ const ClockWeatherVis = () => {
             fill: "whitesmoke",
             fontFamily: "GT Maru Trial",
             opacity: "75%",
+            fontWeight: 600,
           }}
           text={[
             `${new Date(time * 1000).toLocaleTimeString(undefined, {
