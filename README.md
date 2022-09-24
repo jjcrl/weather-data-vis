@@ -1,6 +1,7 @@
 # https://forecast-face.netlify.app/
 
 ### Victory.js & React Data Visualisaion 
+https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 
 ## A stand alone webbapp for displaying weather infomation and in visually interesting way. 
 
