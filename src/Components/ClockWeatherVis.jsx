@@ -151,22 +151,6 @@ const ClockWeatherVis = () => {
           }}
         />
 
-        {/* <VictoryLine
-          interpolation="basis"
-          domain={{
-            y: [-10, 0],
-            x: [sunData[0].x, sunData[sunData.length - 1].x],
-          }}
-          data={sunData}
-          style={{
-            data: {
-              stroke: "none",
-              fill: "url(#pattern1)",
-              opacity: "10%",
-            },
-          }}
-        /> */}
-
         <VictoryScatter
           interpolation="basis"
           domain={{
@@ -178,7 +162,7 @@ const ClockWeatherVis = () => {
             data: {
               stroke: "peachpuff",
               opacity: "100%",
-              strokeWidth: 1,
+              strokeWidth: 0.23,
             },
           }}
         />
