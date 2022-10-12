@@ -10,6 +10,7 @@ import {
   VictoryLine,
   VictoryLabel,
   VictoryContainer,
+  VictoryScatter,
 } from "victory";
 
 import { fecth24HForecast } from "../api";
@@ -134,7 +135,7 @@ const ClockWeatherVis = () => {
             tickLabels: {
               fontSize: 25,
               opacity: "50%",
-              padding: -20,
+              padding: -25,
               fill: "#5e4d5d",
               fontFamily: "GT Maru Trial",
             },
@@ -150,7 +151,7 @@ const ClockWeatherVis = () => {
           }}
         />
 
-        <VictoryLine
+        {/* <VictoryLine
           interpolation="basis"
           domain={{
             y: [-10, 0],
@@ -164,21 +165,20 @@ const ClockWeatherVis = () => {
               opacity: "10%",
             },
           }}
-        />
-        <VictoryLine
-          origin={{ x: 10, y: 10 }}
+        /> */}
+
+        <VictoryScatter
           interpolation="basis"
           domain={{
             x: [sunData[0].x, sunData[sunData.length - 1].x],
+            y: [-20, 30],
           }}
           data={sunData}
           style={{
             data: {
               stroke: "peachpuff",
-              opacity: "30%",
-              strokeWidth: 1.3,
-              strokeDasharray: 90,
-              strokeLinecap: "round",
+              opacity: "100%",
+              strokeWidth: 1,
             },
           }}
         />
@@ -188,17 +188,17 @@ const ClockWeatherVis = () => {
           axisValue={time}
           style={{
             axisLabel: {
-              fontSize: 55,
-              padding: 55,
+              fontSize: 40,
+              padding: 20,
               fill: "#cfcbd9",
               fontFamily: "GT Maru Trial",
               fontWeight: 600,
             },
             axis: {
               stroke: "whitesmoke",
-              strokeWidth: 6,
+              strokeWidth: 4,
               strokeDasharray: 270,
-              opacity: "25%",
+              opacity: "65%",
             },
             tickLabels: { display: "none" },
           }}
@@ -208,7 +208,7 @@ const ClockWeatherVis = () => {
 
         <VictoryArea
           domain={{
-            y: [minMax.min, minMax.max + 10],
+            y: [minMax.min, minMax.max + 5],
             x: [
               hourly[0].datetimeEpoch,
               hourly[hourly.length - 1].datetimeEpoch,
@@ -223,7 +223,7 @@ const ClockWeatherVis = () => {
             data: {
               fill: "none",
               stroke: "url(#myGradient)",
-              strokeWidth: "15",
+              strokeWidth: "7",
             },
           }}
         />
@@ -270,7 +270,7 @@ const ClockWeatherVis = () => {
           textAnchor="middle"
           verticalAnchor="middle"
           x={400}
-          y={420}
+          y={415}
           style={{
             opacity: "50%",
             fontSize: 15,
@@ -286,8 +286,8 @@ const ClockWeatherVis = () => {
         <VictoryLabel
           textAnchor="middle"
           verticalAnchor="middle"
-          x={400}
-          y={445}
+          x={402}
+          y={438}
           style={{
             opacity: "30%",
             fontSize: 14,
