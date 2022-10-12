@@ -7,7 +7,6 @@ import {
   VictoryArea,
   VictoryChart,
   VictoryPolarAxis,
-  VictoryLine,
   VictoryLabel,
   VictoryContainer,
   VictoryScatter,
