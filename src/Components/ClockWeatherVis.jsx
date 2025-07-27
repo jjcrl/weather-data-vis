@@ -76,6 +76,21 @@ const ClockWeatherVis = () => {
   function tick() {
     setTime(new Date().getTime() / 1000);
   }
+    const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
+    // Find the actual coldest and hottest points in your data
+    const coldestHour = hourlyData.find(hour => hour.temp === minTemp);
+    const hottestHour = hourlyData.find(hour => hour.temp === maxTemp);
+    
+    // Your two main colors
+    const coldColor = `hsl(220, 80%, 45%)`; // Glacial blue
+    const warmColor = `hsl(55, 95%, 70%)`; // Glowing yellow
+    
+    // Simple two-stop gradient that will blend smoothly around the circle
+    return [
+      { offset: "0%", color: coldColor },
+      { offset: "100%", color: warmColor }
+    ];
+  };
 
   const findMinMaxTemp = (arrOfObjs) => {
     const temps = arrOfObjs.map((d) => {
@@ -121,13 +136,15 @@ const ClockWeatherVis = () => {
     <>
       <svg style={{ height: 0, width: 0 }}>
         <defs>
-          <linearGradient id="myGradient">
-            <stop offset="0%" stopColor="#fcbf56" />
-            <stop offset="5%" stopColor="#fcbf56" />
-            <stop offset="50%" stopColor="#e95b37" />
-            <stop offset="90%" stopColor="#ab4358" />
-            <stop offset="100%" stopColor="#91345b" />
-          </linearGradient>
+        <linearGradient id="temperatureGradient">
+  {hourly && minMax ? 
+    generateTemperatureGradient(hourly, minMax.min, minMax.max).map((stop, index) => (
+      <stop key={index} offset={stop.offset} stopColor={stop.color} />
+    ))
+    : 
+    <stop offset="0%" stopColor="#FFD700" />
+  }
+</linearGradient>
           <pattern
             id="pattern1"
             x="10"
@@ -247,8 +264,8 @@ const ClockWeatherVis = () => {
           style={{
             data: {
               fill: "none",
-              stroke: "url(#myGradient)",
-              strokeWidth: "7",
+              stroke: "url(#temperatureGradient)",
+                            strokeWidth: "10",
             },
           }}
         />
