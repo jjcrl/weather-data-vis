@@ -1,7 +1,8 @@
-export const fecth24HForecast = async () => {
+export const fetch24HForecast = async () => {
+
   try {
     const query =
-      "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/manchester/today?unitGroup=metric&include=hours%2Ccurrent&key=EST45QEHPPZ7PDCXEKLA642C4&contentType=json";
+    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/manchester/today?unitGroup=metric&include=hours%2Ccurrent&key=${process.env.REACT_APP_VISUAL_CROSSING_KEY}&contentType=json`;
 
     const response = await fetch(query, {
       headers: {

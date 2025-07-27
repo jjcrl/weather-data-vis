@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Loader from "./Loader.jsx";
 import "../App.css";
 
@@ -12,23 +12,42 @@ import {
   VictoryScatter,
 } from "victory";
 
-import { fecth24HForecast } from "../api";
+import { fetch24HForecast } from "../api";
+import ClockDisplay from './ClockDisplay.jsx'
+
+
+const CHART_CONFIG = {
+  CENTER_X: 400,
+  CENTER_Y: 370,
+  RADIUS: 105,
+  WIDTH: 800,
+  HEIGHT: 740,
+  START_ANGLE: 450,
+  END_ANGLE: 90,
+  STROKE_WIDTH: 7,
+  AXIS_STROKE_WIDTH: 4,
+  AXIS_DASH_ARRAY: 270,
+};
+
+const STYLES = {
+  FONT_FAMILY: "GT Maru Trial",
+  GRADIENT_ID: "myGradient",
+  PATTERN1_ID: "pattern1",
+  PATTERN2_ID: "pattern2",
+};
 
 const ClockWeatherVis = () => {
   const [hourly, setHourly] = useState();
   const [curr, setCurr] = useState();
   const [sunData, setSunData] = useState();
-  // const [description, setDescrption] = useState();
-  // const [light, setlight] = useState(["#5e4d5d", "#cfcbd9"]);
   const [minMax, setMinMax] = useState();
   const [loading, setLoading] = useState(true);
   const [time, setTime] = useState(new Date().getTime() / 1000);
 
   useEffect(() => {
-    fecth24HForecast().then((data) => {
+    fetch24HForecast().then((data) => {
       setHourly(data.hourlyForecast);
       setMinMax(findMinMaxTemp(data.hourlyForecast));
-      // setDescrption(data.description);
       setCurr(data.currWeather);
       setSunData(findSunPhases(data.sunrise, data.sunset));
       setLoading(false);
@@ -41,7 +60,7 @@ const ClockWeatherVis = () => {
     return function cleanup() {
       clearInterval(timerID);
     };
-  });
+  },[]);
 
   function tick() {
     setTime(new Date().getTime() / 1000);
@@ -120,14 +139,14 @@ const ClockWeatherVis = () => {
       </svg>
 
       <VictoryChart
-        polar
-        scale={{ x: "time" }}
-        startAngle={450}
-        endAngle={90}
-        height={740}
-        width={800}
-        containerComponent={<VictoryContainer responsive={false} />}
-      >
+  polar
+  scale={{ x: "time" }}
+  startAngle={CHART_CONFIG.START_ANGLE}
+  endAngle={CHART_CONFIG.END_ANGLE}
+  height={CHART_CONFIG.HEIGHT}
+  width={CHART_CONFIG.WIDTH}
+  containerComponent={<VictoryContainer responsive={false} />}
+>
         <VictoryPolarAxis
           style={{
             axis: { stroke: "whitesmoke", strokeWidth: 0, opacity: "20%" },
@@ -210,108 +229,7 @@ const ClockWeatherVis = () => {
             },
           }}
         />
-
-        <circle
-          cx="400"
-          cy="370"
-          r="105"
-          fill="black"
-          stroke="#c67477"
-          strokeWidth={0}
-        />
-        <circle
-          cx="400"
-          cy="370"
-          r="105"
-          fill="url(#pattern2)"
-          stroke="#c67477"
-          strokeWidth={0.3}
-        />
-
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={400}
-          y={371}
-          style={{
-            fontSize: 50,
-            fill: "whitesmoke",
-            fontFamily: "GT Maru Trial",
-            opacity: "75%",
-            fontWeight: 600,
-          }}
-          text={[
-            `${new Date(time * 1000).toLocaleTimeString(undefined, {
-              hour12: false,
-              hour: "numeric",
-              minute: "numeric",
-            })} `,
-          ]}
-        />
-
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={400}
-          y={415}
-          style={{
-            opacity: "50%",
-            fontSize: 15,
-            fill: "#cfcbd9",
-            fontFamily: "GT Maru Trial",
-          }}
-          text={[
-            `${new Date(time * 1000).toLocaleDateString(undefined, {
-              weekday: "long",
-            })}`,
-          ]}
-        />
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={402}
-          y={438}
-          style={{
-            opacity: "30%",
-            fontSize: 14,
-            fill: "#cfcbd9",
-            fontFamily: "GT Maru Trial",
-          }}
-          text={[
-            `${new Date(time * 1000).toLocaleDateString(undefined, {
-              day: "numeric",
-              month: "long",
-            })}`,
-          ]}
-        />
-
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={455}
-          y={330}
-          style={{
-            fontSize: 16,
-            fill: "#cfcbd9",
-            opacity: "50%",
-            fontFamily: "GT Maru Trial",
-          }}
-          text={curr.conditions}
-          transform="skewX(-10)"
-        />
-        <VictoryLabel
-          textAnchor="middle"
-          verticalAnchor="middle"
-          x={403}
-          y={300}
-          style={{
-            fontSize: 15,
-            fill: "#cfcbd9",
-            opacity: "30%",
-            fontFamily: "GT Maru Trial",
-          }}
-          text={`H:${minMax.max}° L:${minMax.min}°`}
-        />
+<ClockDisplay time={time} curr={curr} minMax={minMax} />
       </VictoryChart>
     </>
   );
