@@ -42,16 +42,27 @@ const ClockWeatherVis = () => {
   const [sunData, setSunData] = useState();
   const [minMax, setMinMax] = useState();
   const [loading, setLoading] = useState(true);
-  const [time, setTime] = useState(new Date().getTime() / 1000);
+  const [error, setError] = useState(null);
+  const [time, setTime] = useState(new Date().getTime() / 1000);  
 
   useEffect(() => {
-    fetch24HForecast().then((data) => {
-      setHourly(data.hourlyForecast);
-      setMinMax(findMinMaxTemp(data.hourlyForecast));
-      setCurr(data.currWeather);
-      setSunData(findSunPhases(data.sunrise, data.sunset));
-      setLoading(false);
-    });
+    fetch24HForecast()
+      .then((data) => {
+        if (!data || !data.hourlyForecast) {
+          throw new Error('Invalid weather data received');
+        }
+        
+        setHourly(data.hourlyForecast);
+        setCurr(data.currWeather);
+        setMinMax(findMinMaxTemp(data.hourlyForecast));
+        setSunData(findSunPhases(data.sunrise, data.sunset));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Weather data fetch failed:', err);
+        setError('Failed to load weather data. Please try again later.');
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -93,7 +104,19 @@ const ClockWeatherVis = () => {
   };
 
   if (loading) return <Loader />;
-
+  if (error) return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      color: '#ef4444',
+      fontSize: '18px',
+      fontFamily: 'GT Maru Trial'
+    }}>
+      ⚠️ {error}
+    </div>
+  );
   return (
     <>
       <svg style={{ height: 0, width: 0 }}>
