@@ -15,7 +15,6 @@ import {
 
 import { fetch24HForecast } from "../api";
 import ClockDisplay from './ClockDisplay.jsx'
-import ClockNumbers from './ClockNumbers.jsx'
 
 
 const CHART_CONFIG = {
