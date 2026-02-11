@@ -1,23 +1,23 @@
-// export const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
-//   const coldColor = { h: 254, s: 48, l: 52 };
-//   const hotColor = { h: 11, s: 89, l: 52 };
+export const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
+  const coldColor = { h: 254, s: 48, l: 52 };
+  const hotColor = { h: 11, s: 89, l: 52 };
   
-//   return hourlyData.map((hour, index) => {
-//     const normalized = (hour.temp - minTemp) / (maxTemp - minTemp);
+  return hourlyData.map((hour, index) => {
+    const normalized = (hour.temp - minTemp) / (maxTemp - minTemp);
     
-//     const h = Math.round(coldColor.h + (hotColor.h - coldColor.h) * normalized);
-//     const s = Math.round(coldColor.s + (hotColor.s - coldColor.s) * normalized);
-//     const l = Math.round(coldColor.l + (hotColor.l - coldColor.l) * normalized);
+    const h = Math.round(coldColor.h + (hotColor.h - coldColor.h) * normalized);
+    const s = Math.round(coldColor.s + (hotColor.s - coldColor.s) * normalized);
+    const l = Math.round(coldColor.l + (hotColor.l - coldColor.l) * normalized);
     
-//     // Calculate angle position around the circle (0deg to 360deg)
-//     const angle = (index / hourlyData.length) * 360;
+    // Calculate angle position around the circle (0deg to 360deg)
+    const angle = (index / hourlyData.length) * 360;
     
-//     return {
-//       offset: `${Math.round(angle)}deg`,  // Use degrees instead of percentages
-//       color: `hsl(${h}, ${s}%, ${l}%)`
-//     };
-//   });
-// };
+    return {
+      offset: `${Math.round(angle)}deg`,  // Use degrees instead of percentages
+      color: `hsl(${h}, ${s}%, ${l}%)`
+    };
+  });
+};
 
   export const findMinMaxTemp = (arrOfObjs) => {
     const temps = arrOfObjs.map((d) => {

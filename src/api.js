@@ -1,8 +1,41 @@
+const getUserLocation = () => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation not supported'));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
+        });
+      },
+      (error) => {
+        console.warn('Location access denied, falling back to Manchester');
+        // Fallback to Manchester if user denies permission
+        resolve({ lat: 53.4808, lon: -2.2426 });
+      }
+    );
+  });
+};
+
+
+
+
+
+
+
+
+
 export const fetch24HForecast = async () => {
 
   try {
+    const { lat, lon } = await getUserLocation();
+
     const query =
-    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/manchester/today?unitGroup=metric&include=hours%2Ccurrent&key=${process.env.REACT_APP_VISUAL_CROSSING_KEY}&contentType=json`;
+    `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/today?unitGroup=metric&include=hours%2Ccurrent&key=${process.env.REACT_APP_VISUAL_CROSSING_KEY}&contentType=json`;
 
     const response = await fetch(query, {
       headers: {

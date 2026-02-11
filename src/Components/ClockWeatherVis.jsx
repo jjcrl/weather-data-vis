@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./Loader.jsx";
 import "../App.css";
-import { findMinMaxTemp ,findSunPhases} from "./helperFuncs.js";
+import { findMinMaxTemp ,findSunPhases,generateTemperatureGradient} from "./helperFuncs.js";
 import {
   VictoryArea,
   VictoryChart,
@@ -93,13 +93,13 @@ function tick() {
     <>
      <svg style={{ height: 0, width: 0 }}>
   <defs>
-      {/* {hourly && minMax ? 
+      {hourly && minMax ? 
         generateTemperatureGradient(hourly, minMax.min, minMax.max).map((stop, index) => (
           <stop key={index} offset={stop.offset} stopColor={stop.color} />
         ))
         : 
         <stop offset="0%" stopColor="#FFD700" />
-      } */}
+      }
 
     <pattern
       id="pattern1"
