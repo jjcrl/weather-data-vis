@@ -27,13 +27,6 @@ const CHART_CONFIG = {
   AXIS_DASH_ARRAY: 270,
 };
 
-// const STYLES = {
-//   FONT_FAMILY: "GT Maru Trial",
-//   GRADIENT_ID: "myGradient",
-//   PATTERN1_ID: "pattern1",
-//   PATTERN2_ID: "pattern2",
-// };
-
 const ClockWeatherVis = () => {
   const [hourly, setHourly] = useState();
   const [curr, setCurr] = useState();
@@ -49,7 +42,6 @@ const ClockWeatherVis = () => {
         if (!data || !data.hourlyForecast) {
           throw new Error('Invalid weather data received');
         }
-        
         setHourly(data.hourlyForecast);
         setCurr(data.currWeather);
         setMinMax(findMinMaxTemp(data.hourlyForecast));
@@ -89,10 +81,20 @@ function tick() {
       ⚠️ {error}
     </div>
   );
-  return (
+
+  const tempWithBulge = hourly.map((hour, index) => {
+  const sunIntensity = sunData[index]?.y || 0;
+  const bulge = (sunIntensity / 10) * 4; // 2 = bulge amount, adjust if needed
+  
+  return {
+    ...hour,
+    temp: hour.temp + bulge
+  };
+});  return (
     <>
      <svg style={{ height: 0, width: 0 }}>
   <defs>
+    <linearGradient id="temperatureGradient">
       {hourly && minMax ? 
         generateTemperatureGradient(hourly, minMax.min, minMax.max).map((stop, index) => (
           <stop key={index} offset={stop.offset} stopColor={stop.color} />
@@ -100,6 +102,7 @@ function tick() {
         : 
         <stop offset="0%" stopColor="#FFD700" />
       }
+    </linearGradient>
 
     <pattern
       id="pattern1"
@@ -167,28 +170,7 @@ function tick() {
                  return time[0] === "0" ? time.slice(-1) : time;
                }}
              />
-
-        <VictoryScatter
-          domain={{
-            x: [sunData[0].x, sunData[sunData.length - 1].x],
-            y: [-20, 30],
-          }}
-          data={sunData}
-          
-          size={5}
-          style={{
-            data: {
-               fill: (d) => {
-               const intensity = d.datum._y / 10;
-                if (intensity < 0.1) {
-                return 'rgba(50, 50, 80, 0.2)'; // very faint dark dots for night
-                                     }
-                 return `rgba(245, 185, 0, ${intensity})`;
-    },
-  },
-  }}
-        />
-
+        
         <VictoryPolarAxis
           dependentAxis
           axisValue={time}
@@ -213,16 +195,38 @@ function tick() {
         />
 
 
+               <VictoryScatter
+          domain={{
+            x: [sunData[0].x, sunData[sunData.length - 1].x],
+            y: [-20, 30],
+          }}
+          data={sunData}
+          
+          size={5}
+          style={{
+            data: {
+               fill: (d) => {
+               const intensity = d.datum._y / 10;
+                if (intensity < 0.1) {
+                return 'rgba(50, 50, 80, 0.2)'; // very faint dark dots for night
+                                     }
+                 return `rgba(245, 185, 0, ${intensity})`;
+    },
+  },
+  }}
+        />
+
+
 
           <VictoryArea
           domain={{
-            y: [minMax.min, minMax.max + 5],
+            y: [minMax.min, minMax.max ],
             x: [
               hourly[0].datetimeEpoch,
               hourly[hourly.length - 1].datetimeEpoch,
             ],
           }}
-          data={hourly}
+          data={tempWithBulge}
           x={"datetimeEpoch"}
           y={"temp"}
           interpolation="basis"
@@ -231,10 +235,13 @@ function tick() {
             data: {
               fill: "none",
               stroke: "url(#temperatureGradient)",
-                            strokeWidth: "10",
+              strokeWidth: "10",
             },
           }}
         />        
+
+
+
 <ClockDisplay time={time} curr={curr} minMax={minMax} />
       </VictoryChart>
     </>

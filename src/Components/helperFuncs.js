@@ -1,19 +1,36 @@
 export const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
-  const coldColor = { h: 254, s: 48, l: 52 };
-  const hotColor = { h: 11, s: 89, l: 52 };
+  // Determine season/palette based on max temp
+  let palette;
+  
+  if (maxTemp < 12) {
+    palette = {
+      cold: { h: 206, s: 100, l: 83 },  
+      hot: { h: 212, s: 100, l: 60 }
+    };
+  } else if (maxTemp < 20) {
+    palette = {
+      cold: { h: 45, s: 100, l: 75 },  
+      hot: { h: 22, s: 94, l: 65 }    
+    };
+  } else {
+    palette = {
+      cold: { h: 13, s: 85, l: 60 },  
+      hot: { h: 360, s: 100, l: 52 }     
+    };
+  }
   
   return hourlyData.map((hour, index) => {
+    // Normalize within the day's range
     const normalized = (hour.temp - minTemp) / (maxTemp - minTemp);
     
-    const h = Math.round(coldColor.h + (hotColor.h - coldColor.h) * normalized);
-    const s = Math.round(coldColor.s + (hotColor.s - coldColor.s) * normalized);
-    const l = Math.round(coldColor.l + (hotColor.l - coldColor.l) * normalized);
+    const h = Math.round(palette.cold.h + (palette.hot.h - palette.cold.h) * normalized);
+    const s = Math.round(palette.cold.s + (palette.hot.s - palette.cold.s) * normalized);
+    const l = Math.round(palette.cold.l + (palette.hot.l - palette.cold.l) * normalized);
     
-    // Calculate angle position around the circle (0deg to 360deg)
     const angle = (index / hourlyData.length) * 360;
     
     return {
-      offset: `${Math.round(angle)}deg`,  // Use degrees instead of percentages
+      offset: `${Math.round(angle)}deg`,
       color: `hsl(${h}, ${s}%, ${l}%)`
     };
   });
