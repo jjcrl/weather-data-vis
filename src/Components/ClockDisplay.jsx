@@ -21,6 +21,7 @@ const ClockDisplay = ({ time, curr, minMax }) => {
         fill="black"
         stroke="#c67477"
         strokeWidth={0}
+        opacity={70}
       />
       <circle
         cx={CHART_CONFIG.CENTER_X}
@@ -29,6 +30,8 @@ const ClockDisplay = ({ time, curr, minMax }) => {
         fill="url(#pattern2)"
         stroke="#c67477"
         strokeWidth={0.3}
+                opacity={70}
+
       />
 
       <VictoryLabel
@@ -95,13 +98,13 @@ const ClockDisplay = ({ time, curr, minMax }) => {
         x={CHART_CONFIG.CENTER_X + 55}
         y={CHART_CONFIG.CENTER_Y - 40}
         style={{
-          fontSize: 16,
+          fontSize: 14,
           fill: "#cfcbd9",
-          opacity: "50%",
+          opacity: "40%",
           fontFamily: STYLES.FONT_FAMILY,
         }}
         text={curr.conditions}
-        transform="skewX(-10)"
+        transform="skewX(-9)"
       />
 
       <VictoryLabel

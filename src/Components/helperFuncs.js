@@ -1,23 +1,23 @@
-export const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
-  const coldColor = { h: 254, s: 48, l: 52 };
-  const hotColor = { h: 11, s: 89, l: 52 };
+// export const generateTemperatureGradient = (hourlyData, minTemp, maxTemp) => {
+//   const coldColor = { h: 254, s: 48, l: 52 };
+//   const hotColor = { h: 11, s: 89, l: 52 };
   
-  return hourlyData.map((hour, index) => {
-    const normalized = (hour.temp - minTemp) / (maxTemp - minTemp);
+//   return hourlyData.map((hour, index) => {
+//     const normalized = (hour.temp - minTemp) / (maxTemp - minTemp);
     
-    const h = Math.round(coldColor.h + (hotColor.h - coldColor.h) * normalized);
-    const s = Math.round(coldColor.s + (hotColor.s - coldColor.s) * normalized);
-    const l = Math.round(coldColor.l + (hotColor.l - coldColor.l) * normalized);
+//     const h = Math.round(coldColor.h + (hotColor.h - coldColor.h) * normalized);
+//     const s = Math.round(coldColor.s + (hotColor.s - coldColor.s) * normalized);
+//     const l = Math.round(coldColor.l + (hotColor.l - coldColor.l) * normalized);
     
-    // Calculate angle position around the circle (0deg to 360deg)
-    const angle = (index / hourlyData.length) * 360;
+//     // Calculate angle position around the circle (0deg to 360deg)
+//     const angle = (index / hourlyData.length) * 360;
     
-    return {
-      offset: `${Math.round(angle)}deg`,  // Use degrees instead of percentages
-      color: `hsl(${h}, ${s}%, ${l}%)`
-    };
-  });
-};
+//     return {
+//       offset: `${Math.round(angle)}deg`,  // Use degrees instead of percentages
+//       color: `hsl(${h}, ${s}%, ${l}%)`
+//     };
+//   });
+// };
 
   export const findMinMaxTemp = (arrOfObjs) => {
     const temps = arrOfObjs.map((d) => {
@@ -34,6 +34,8 @@ export const findSunPhases = (a, b) => {
   const data = [];
   const baselineValue = 0;
   const maxSunValue = 10;
+  const twilightOffset = 0.5;
+
   
   // Convert timestamps to Date objects
   const sunriseDate = new Date(a * 1000);
@@ -56,12 +58,17 @@ export const findSunPhases = (a, b) => {
     // Create timestamp for this hour
     const hourTimestamp = Math.floor(baseDate.getTime() / 1000) + (hour * 3600);
     
-    let sunIntensity;
+    let sunIntensity = baselineValue; // DEFAULT TO NIGHTTIME
     
-    if (hour < sunriseHour || hour > sunsetHour) {
-      // Nighttime: use baseline value
-      sunIntensity = baselineValue;
-    } else {
+    if (hour >= (sunriseHour - twilightOffset) && hour < sunriseHour) {
+      // Pre-dawn glow
+      const progress = (hour - (sunriseHour - twilightOffset)) / twilightOffset;
+      sunIntensity = progress * (maxSunValue * 0.3);
+    } else if (hour > sunsetHour && hour <= (sunsetHour + twilightOffset)) {
+      // Post-dusk glow
+      const progress = 1 - ((hour - sunsetHour) / twilightOffset);
+      sunIntensity = progress * (maxSunValue * 0.3);
+    } else if (hour >= sunriseHour && hour <= sunsetHour) {
       // Daytime: calculate sun intensity using a bell curve
       const distanceFromPeak = Math.abs(hour - peakHour);
       const maxDistance = daylightDuration / 2;

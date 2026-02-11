@@ -1,16 +1,13 @@
-import React from "react";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Loader from "./Loader.jsx";
 import "../App.css";
-import { findMinMaxTemp ,generateTemperatureGradient,tick,findSunPhases} from "./helperFuncs.js";
+import { findMinMaxTemp ,findSunPhases} from "./helperFuncs.js";
 import {
   VictoryArea,
   VictoryChart,
   VictoryPolarAxis,
-  VictoryLabel,
   VictoryContainer,
   VictoryScatter,
-  VictoryLine
 } from "victory";
 
 import { fetch24HForecast } from "../api";
@@ -96,15 +93,13 @@ function tick() {
     <>
      <svg style={{ height: 0, width: 0 }}>
   <defs>
-    <conicGradient id="temperatureGradient" cx="50%" cy="50%" from="0deg">
-      {hourly && minMax ? 
+      {/* {hourly && minMax ? 
         generateTemperatureGradient(hourly, minMax.min, minMax.max).map((stop, index) => (
           <stop key={index} offset={stop.offset} stopColor={stop.color} />
         ))
         : 
         <stop offset="0%" stopColor="#FFD700" />
-      }
-    </conicGradient>
+      } */}
 
     <pattern
       id="pattern1"
@@ -174,19 +169,24 @@ function tick() {
              />
 
         <VictoryScatter
-          interpolation="basis"
           domain={{
             x: [sunData[0].x, sunData[sunData.length - 1].x],
             y: [-20, 30],
           }}
           data={sunData}
+          
+          size={5}
           style={{
             data: {
-              stroke: "peachpuff",
-              opacity: "100%",
-              strokeWidth: 0.5,
-            },
-          }}
+               fill: (d) => {
+               const intensity = d.datum._y / 10;
+                if (intensity < 0.1) {
+                return 'rgba(50, 50, 80, 0.2)'; // very faint dark dots for night
+                                     }
+                 return `rgba(245, 185, 0, ${intensity})`;
+    },
+  },
+  }}
         />
 
         <VictoryPolarAxis
@@ -204,7 +204,7 @@ function tick() {
               stroke: "whitesmoke",
               strokeWidth: 4,
               strokeDasharray: 270,
-              opacity: "1%",
+              opacity: "10%",
             },
             tickLabels: { display: "none" },
           }}
@@ -234,16 +234,7 @@ function tick() {
                             strokeWidth: "10",
             },
           }}
-        />
-
-
-      
-
-
-  
-        
-
-        
+        />        
 <ClockDisplay time={time} curr={curr} minMax={minMax} />
       </VictoryChart>
     </>
