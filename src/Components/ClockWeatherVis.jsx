@@ -27,12 +27,12 @@ const CHART_CONFIG = {
   AXIS_DASH_ARRAY: 270,
 };
 
-const STYLES = {
-  FONT_FAMILY: "GT Maru Trial",
-  GRADIENT_ID: "myGradient",
-  PATTERN1_ID: "pattern1",
-  PATTERN2_ID: "pattern2",
-};
+// const STYLES = {
+//   FONT_FAMILY: "GT Maru Trial",
+//   GRADIENT_ID: "myGradient",
+//   PATTERN1_ID: "pattern1",
+//   PATTERN2_ID: "pattern2",
+// };
 
 const ClockWeatherVis = () => {
   const [hourly, setHourly] = useState();
